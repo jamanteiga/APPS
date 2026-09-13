@@ -3,11 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proyectos</title>
+  <title>Herramientas de gestión</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 640px; margin: 60px auto; padding: 0 20px; color: #333; }
     h1 { font-size: 26px; text-align: center; margin-bottom: 4px; }
-    .subtitulo { text-align: center; color: #666; font-size: 14px; margin-bottom: 30px; }
+    .subtitulo { text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; }
+    .selector { text-align: center; margin-bottom: 24px; }
+    .selector button {
+      padding: 6px 16px; border: 1px solid #ccc; background: #f5f5f5; color: #333;
+      font-size: 13px; font-weight: bold; cursor: pointer;
+    }
+    .selector button:first-child { border-radius: 6px 0 0 6px; }
+    .selector button:last-child { border-radius: 0 6px 6px 0; }
+    .selector button.activo { background: #007bff; color: #fff; border-color: #007bff; }
     .tarjetas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .tarjeta {
       background: transparent; border: none; border-radius: 10px; padding: 10px;
@@ -21,26 +29,49 @@
 </head>
 <body>
 
-  <h1>Proyectos</h1>
+  <h1>Herramientas de gestión</h1>
   <div class="subtitulo">Selecciona una aplicación</div>
+
+  <div class="selector">
+    <button id="btn-color" onclick="cambiarModo('color')">Color</button>
+    <button id="btn-convencional" onclick="cambiarModo('convencional')">Convencional</button>
+  </div>
 
   <div class="tarjetas">
     <a class="tarjeta" href="https://jamanteiga.github.io/ASME" target="_blank" rel="noopener">
-      <img class="imagen-completa" src="IMAGES/ASME.jpg" alt="ASME">
+      <img class="imagen-completa" data-nombre="ASME" src="IMAGES/ASME.jpg" alt="ASME">
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/Documentlist" target="_blank" rel="noopener">
-      <img class="imagen-completa" src="IMAGES/GESDOC.jpg" alt="GESDOC">
+      <img class="imagen-completa" data-nombre="GESDOC" src="IMAGES/GESDOC.jpg" alt="GESDOC">
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/ESTRUCTURA" target="_blank" rel="noopener">
-      <img class="imagen-completa" src="IMAGES/ESTRUCTURA.jpg" alt="ESTRUCTURA">
+      <img class="imagen-completa" data-nombre="ESTRUCTURA" src="IMAGES/ESTRUCTURA.jpg" alt="ESTRUCTURA">
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/REGHOR" target="_blank" rel="noopener">
-      <img class="imagen-completa" src="IMAGES/REGHOR.jpg" alt="REGHOR">
+      <img class="imagen-completa" data-nombre="REGHOR" src="IMAGES/REGHOR.jpg" alt="REGHOR">
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/PIPING" target="_blank" rel="noopener">
-      <img class="imagen-completa" src="IMAGES/PIPING.jpg" alt="PIPING">
+      <img class="imagen-completa" data-nombre="PIPING" src="IMAGES/PIPING.jpg" alt="PIPING">
     </a>
   </div>
+
+  <script>
+    function cambiarModo(modo) {
+      document.querySelectorAll('.imagen-completa').forEach(function (img) {
+        const nombre = img.getAttribute('data-nombre');
+        img.src = modo === 'color' ? 'IMAGES/' + nombre + '1.jpg' : 'IMAGES/' + nombre + '.jpg';
+      });
+      document.getElementById('btn-color').classList.toggle('activo', modo === 'color');
+      document.getElementById('btn-convencional').classList.toggle('activo', modo === 'convencional');
+      try { localStorage.setItem('modo_imagenes', modo); } catch (e) {}
+    }
+
+    (function () {
+      let modo = 'convencional';
+      try { modo = localStorage.getItem('modo_imagenes') || 'convencional'; } catch (e) {}
+      cambiarModo(modo);
+    })();
+  </script>
 
 </body>
 </html>
