@@ -54,7 +54,10 @@
       <img class="imagen-completa" data-nombre="PIPING" src="IMAGES/PIPING.jpg" alt="PIPING">
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/RecipientesPresion/index.html" target="_blank" rel="noopener">
-      <img class="imagen-completa" data-nombre="CE_MARKING_2014_68_CE" src="IMAGES/CE_MARKING_2014_68_CE.jpg" alt="PED 2014/68/CE">
+      <img class="imagen-completa" data-nombre="CE_MARKING_2014_68_CE" data-especial-convencional="CE_MARKING_2014_68_CE1" src="IMAGES/CE_MARKING_2014_68_CE.jpg" alt="PED 2014/68/CE">
+    </a>
+    <a class="tarjeta" href="https://jamanteiga.github.io/CONVERTUNITS" target="_blank" rel="noopener">
+      <img class="imagen-completa" data-nombre="CONVERSOR-UNIDADES" src="IMAGES/CONVERSOR-UNIDADES.jpg" alt="Conversor de unidades">
     </a>
   </div>
 
@@ -62,12 +65,22 @@
     function cambiarModo(modo) {
       document.querySelectorAll('.imagen-completa').forEach(function (img) {
         const nombre = img.getAttribute('data-nombre');
+        const especialConvencional = img.getAttribute('data-especial-convencional');
+        
         img.onerror = function () {
-          // Si no existe la versión color, usa la convencional
           img.onerror = null;
           img.src = 'IMAGES/' + nombre + '.jpg';
         };
-        img.src = modo === 'color' ? 'IMAGES/' + nombre + '1.jpg' : 'IMAGES/' + nombre + '.jpg';
+
+        if (modo === 'color') {
+          img.src = 'IMAGES/' + nombre + '1.jpg';
+        } else {
+          if (especialConvencional) {
+            img.src = 'IMAGES/' + especialConvencional + '.jpg';
+          } else {
+            img.src = 'IMAGES/' + nombre + '.jpg';
+          }
+        }
       });
       document.getElementById('btn-color').classList.toggle('activo', modo === 'color');
       document.getElementById('btn-convencional').classList.toggle('activo', modo === 'convencional');
