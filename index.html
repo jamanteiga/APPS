@@ -8,14 +8,6 @@
     body { font-family: Arial, sans-serif; max-width: 640px; margin: 60px auto; padding: 0 20px; color: #333; }
     h1 { font-size: 26px; text-align: center; margin-bottom: 4px; }
     .subtitulo { text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; }
-    .selector { text-align: center; margin-bottom: 24px; }
-    .selector button {
-      padding: 6px 16px; border: 1px solid #ccc; background: #f5f5f5; color: #333;
-      font-size: 13px; font-weight: bold; cursor: pointer;
-    }
-    .selector button:first-child { border-radius: 6px 0 0 6px; }
-    .selector button:last-child { border-radius: 0 6px 6px 0; }
-    .selector button.activo { background: #007bff; color: #fff; border-color: #007bff; }
     .tarjetas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .tarjeta {
       background: transparent; border: none; border-radius: 10px; padding: 10px;
@@ -32,75 +24,38 @@
   <h1>Herramientas de gestión</h1>
   <div class="subtitulo">Selecciona una aplicación</div>
 
-  <div class="selector">
-    <button id="btn-color" onclick="cambiarModo('color')">Color</button>
-    <button id="btn-convencional" onclick="cambiarModo('convencional')">Convencional</button>
-  </div>
-
   <div class="tarjetas">
     <a class="tarjeta" href="https://jamanteiga.github.io/ASME/index.html" target="_blank" rel="noopener">
-      <img class="imagen-completa" data-nombre="ASME" src="IMAGES/ASME.jpg" alt="ASME">
+      <img class="imagen-completa" src="IMAGES/ASME1.jpg" alt="ASME">
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/Documentlist" target="_blank" rel="noopener">
-      <img class="imagen-completa" data-nombre="GESDOC" src="IMAGES/GESDOC.jpg" alt="GESDOC">
+      <img class="imagen-completa" src="IMAGES/GESDOC1.jpg" alt="GESDOC">
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/ESTRUCTURA" target="_blank" rel="noopener">
-      <img class="imagen-completa" data-nombre="ESTRUCTURA" src="IMAGES/ESTRUCTURA.jpg" alt="ESTRUCTURA">
+      <img class="imagen-completa" src="IMAGES/ESTRUCTURA1.jpg" alt="ESTRUCTURA">
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/REGHOR" target="_blank" rel="noopener">
-      <img class="imagen-completa" data-nombre="REGHOR" src="IMAGES/REGHOR.jpg" alt="REGHOR">
+      <img class="imagen-completa" src="IMAGES/REGHOR1.jpg" alt="REGHOR">
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/PIPING" target="_blank" rel="noopener">
-      <img class="imagen-completa" data-nombre="PIPING" src="IMAGES/PIPING.jpg" alt="PIPING">
+      <img class="imagen-completa" src="IMAGES/PIPING1.jpg" alt="PIPING">
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/RecipientesPresion/index.html" target="_blank" rel="noopener">
-      <img class="imagen-completa" data-nombre="CE_MARKING_2014_68_CE" data-especial-color="CE_MARKING_2014_68_CE" data-especial-convencional="CE_MARKING_2014_68_CE1" src="IMAGES/CE_MARKING_2014_68_CE.jpg" alt="PED 2014/68/CE">
+      <img class="imagen-completa" src="IMAGES/CE_MARKING_2014_68_CE.jpg" alt="PED 2014/68/CE">
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/CONVERUNITS" target="_blank" rel="noopener">
-      <img class="imagen-completa" data-nombre="CONVERSOR-UNIDADES" src="IMAGES/CONVERSOR-UNIDADES.jpg" alt="Conversor de unidades">
+      <img class="imagen-completa" src="IMAGES/CONVERSOR-UNIDADES1.jpg" alt="Conversor de unidades">
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/Moody" target="_blank" rel="noopener">
-      <img class="imagen-completa" data-nombre="Moody" data-especial-color="MOODY" data-especial-convencional="MOODY1" src="IMAGES/MOODY1.jpg" alt="Diagrama de Moody">
+      <img class="imagen-completa" src="IMAGES/MOODY.jpg" alt="Diagrama de Moody">
+    </a>
+    <a class="tarjeta" href="https://jamanteiga.github.io/LIMPFINC" target="_blank" rel="noopener">
+      <img class="imagen-completa" src="IMAGES/LIMPFINC.jpg" alt="Limpieza de fincas">
+    </a>
+    <a class="tarjeta" href="https://jamanteiga.github.io/VISORCAD" target="_blank" rel="noopener">
+      <img class="imagen-completa" src="IMAGES/VISORCAD.jpg" alt="Visor CAD">
     </a>
   </div>
-
-  <script>
-    function cambiarModo(modo) {
-      document.querySelectorAll('.imagen-completa').forEach(function (img) {
-        const nombre = img.getAttribute('data-nombre');
-        const especialColor = img.getAttribute('data-especial-color');
-        const especialConvencional = img.getAttribute('data-especial-convencional');
-        
-        img.onerror = function () {
-          img.onerror = null;
-          img.src = 'IMAGES/' + nombre + '.jpg';
-        };
-
-        if (modo === 'color') {
-          if (especialColor) {
-            img.src = 'IMAGES/' + especialColor + '.jpg';
-          } else {
-            img.src = 'IMAGES/' + nombre + '1.jpg';
-          }
-        } else {
-          if (especialConvencional) {
-            img.src = 'IMAGES/' + especialConvencional + '.jpg';
-          } else {
-            img.src = 'IMAGES/' + nombre + '.jpg';
-          }
-        }
-      });
-      document.getElementById('btn-color').classList.toggle('activo', modo === 'color');
-      document.getElementById('btn-convencional').classList.toggle('activo', modo === 'convencional');
-      try { localStorage.setItem('modo_imagenes', modo); } catch (e) {}
-    }
-
-    (function () {
-      let modo = 'convencional';
-      try { modo = localStorage.getItem('modo_imagenes') || 'convencional'; } catch (e) {}
-      cambiarModo(modo);
-    })();
-  </script>
 
 </body>
 </html>
