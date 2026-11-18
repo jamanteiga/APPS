@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Herramientas de gestión</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 900px; margin: 60px auto; padding: 0 20px; color: #333; }
+    body { font-family: Arial, sans-serif; max-width: 1100px; margin: 60px auto; padding: 0 20px; color: #333; }
     h1 { font-size: 26px; text-align: center; margin-bottom: 4px; }
     .subtitulo { text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; }
-    .tarjetas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .tarjetas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    @media (max-width: 900px) { .tarjetas { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 600px) { .tarjetas { grid-template-columns: repeat(2, 1fr); } }
     .tarjeta {
       position: relative; background: transparent; border: none; border-radius: 10px; padding: 10px;
@@ -84,6 +85,9 @@
     </a>
     <a class="tarjeta" href="https://jamanteiga.github.io/HVAC" target="_blank" rel="noopener" data-tooltip="HVAC – Cálculo de climatización y ventilación" aria-label="HVAC – Cálculo de climatización y ventilación">
       <img class="imagen-completa" src="IMAGES/HVAC.jpg" alt="HVAC" onerror="sinImagen(this)">
+    </a>
+    <a class="tarjeta" href="https://jamanteiga.github.io/FEEDBACK" target="_blank" rel="noopener" data-tooltip="FEEDBACK – Sugerencias y comentarios" aria-label="FEEDBACK – Sugerencias y comentarios">
+      <img class="imagen-completa" src="IMAGES/FEEDBACK.jpg" alt="FEEDBACK" onerror="sinImagen(this)">
     </a>
   </div>
 
