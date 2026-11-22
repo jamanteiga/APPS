@@ -5,42 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Herramientas de gestión</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 1100px; margin: 60px auto; padding: 0 20px; color: #333; }
-    h1 { font-size: 26px; text-align: center; margin-bottom: 4px; }
-    .subtitulo { text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; }
-    .tarjetas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-    @media (max-width: 900px) { .tarjetas { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 600px) { .tarjetas { grid-template-columns: repeat(2, 1fr); } }
-    .tarjeta {
-      position: relative; background: transparent; border: none; border-radius: 10px; padding: 10px;
-      text-align: center; text-decoration: none; color: #333; font-weight: bold;
-      transition: transform 0.1s;
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; overflow: hidden; }
+    body {
+      font-family: Arial, sans-serif; color: #333; background: #fff;
+      display: flex; flex-direction: column; height: 100vh; height: 100dvh;
+      padding: 1.2vh 1.2vw;
     }
-    .tarjeta:hover { transform: translateY(-2px) scale(1.02); }
-    .tarjeta .imagen-completa { width: 100%; max-height: 160px; object-fit: contain; display: block; border: none; outline: none; }
-    /* Tooltip */
+    .cabecera { flex: 0 0 auto; text-align: center; margin-bottom: 1vh; }
+    h1 { font-size: clamp(16px, 3vh, 26px); margin: 0; }
+    .subtitulo { color: #666; font-size: clamp(11px, 1.6vh, 14px); margin-top: 2px; }
+    .tarjetas {
+      flex: 1 1 auto; min-height: 0;
+      display: grid; gap: 1vh 1vw;
+      grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr));
+      grid-template-rows: repeat(var(--rows, 4), minmax(0, 1fr));
+    }
+    .tarjeta {
+      position: relative; min-width: 0; min-height: 0;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; color: #333; font-weight: bold;
+      border-radius: 8px; transition: transform 0.1s;
+    }
+    .tarjeta:hover { transform: scale(1.03); z-index: 5; }
+    .tarjeta .imagen-completa {
+      max-width: 100%; max-height: 100%; width: auto; height: auto;
+      object-fit: contain; display: block; border-radius: 6px;
+    }
+    /* Tooltip dentro de la tarjeta (nunca se sale de la pantalla) */
     .tarjeta::after {
       content: attr(data-tooltip);
-      position: absolute; left: 50%; bottom: 100%; transform: translate(-50%, 4px);
-      background: #222; color: #fff; font-size: 12px; font-weight: normal; line-height: 1.3;
-      padding: 6px 10px; border-radius: 6px; white-space: nowrap; pointer-events: none;
-      opacity: 0; transition: opacity 0.15s, transform 0.15s; z-index: 10;
+      position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%);
+      max-width: 95%; background: rgba(20,20,20,0.88); color: #fff;
+      font-size: 12px; font-weight: normal; line-height: 1.3; text-align: center;
+      padding: 5px 9px; border-radius: 6px; pointer-events: none;
+      opacity: 0; transition: opacity 0.15s; z-index: 10;
     }
-    .tarjeta:hover::after, .tarjeta:focus-visible::after { opacity: 1; transform: translate(-50%, -4px); }
+    .tarjeta:hover::after, .tarjeta:focus-visible::after { opacity: 1; }
     /* Si falta la imagen, se muestra el nombre */
     .sin-imagen {
-      display: flex; align-items: center; justify-content: center; height: 140px;
-      border: 2px dashed #bbb; border-radius: 10px; color: #555; font-size: 16px; padding: 0 8px;
+      width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+      border: 2px dashed #bbb; border-radius: 8px; color: #555; font-size: 15px; padding: 0 6px; text-align: center;
     }
-    .pie { text-align: center; margin-top: 30px; }
   </style>
 </head>
 <body>
 
-  <h1>Herramientas de gestión</h1>
-  <div class="subtitulo">Selecciona una aplicación</div>
+  <div class="cabecera">
+    <h1>Herramientas de gestión</h1>
+    <div class="subtitulo">Selecciona una aplicación</div>
+  </div>
 
-  <div class="tarjetas">
+  <div class="tarjetas" id="tarjetas">
     <a class="tarjeta" href="https://jamanteiga.github.io/ASME/index.html" target="_blank" rel="noopener" data-tooltip="Cálculo de recipientes según código ASME" aria-label="Cálculo de recipientes según código ASME">
       <img class="imagen-completa" src="IMAGES/ASME1.jpg" alt="ASME" onerror="sinImagen(this)">
     </a>
@@ -104,6 +120,26 @@
       div.textContent = img.alt;
       img.replaceWith(div);
     }
+
+    // Elige filas x columnas para que todas las tarjetas quepan en pantalla
+    // con el mayor tamaño posible (sin scroll).
+    var PROPORCION = 1.33; // ancho/alto aproximado de las imágenes
+    function ajustarRejilla() {
+      var g = document.getElementById('tarjetas');
+      var n = g.children.length;
+      var W = g.clientWidth, H = g.clientHeight;
+      var mejor = { c: 1, r: n, t: 0 };
+      for (var c = 1; c <= n; c++) {
+        var r = Math.ceil(n / c);
+        var w = W / c, h = H / r;
+        var t = Math.min(w, h * PROPORCION); // ancho útil de la imagen
+        if (t > mejor.t) mejor = { c: c, r: r, t: t };
+      }
+      g.style.setProperty('--cols', mejor.c);
+      g.style.setProperty('--rows', mejor.r);
+    }
+    window.addEventListener('resize', ajustarRejilla);
+    ajustarRejilla();
   </script>
 
 </body>
